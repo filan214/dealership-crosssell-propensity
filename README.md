@@ -1,10 +1,27 @@
 # Dealership Cross-Sell Propensity Model
 
-## Business question
-Sales can't call every customer. Who should they call first,
-and how much does that improve results?
+## How it works
+A dealership has more customers than its sales team can call. This project answers: who should they call first, and how much does that improve results over calling people at random?
 
-**Answer:** calling the top 30% of customers ranked by the model reaches **79.0% of all likely responders**, a **2.6× lift** over calling at random.
+```mermaid
+flowchart TD
+    A["<b>1. Raw customer data (CSV)</b><br/>What's inside: age, vehicle age,<br/>past damage, insurance status"]
+    B["<b>2. SQL (Postgres / Neon)</b><br/>Explore and group customers<br/>into segments"]
+    C["<b>3. Python machine learning (LightGBM)</b><br/>Learn who is likely to buy<br/>Output: a score per customer"]
+    D["<b>4. Tableau dashboard</b><br/>Turn scores into a ranked call list<br/>sales can actually use"]
+    E["<b>5. Business decision</b><br/>Call the top 30% first"]
+    F(["<b>Outcome</b><br/>79% of responders reached<br/>2.6× lift vs random calling"])
+    A --> B --> C --> D --> E --> F
+```
+
+The model's top 30% of ranked customers captured 79% of all responders — a 2.6x lift over random targeting (AUC 0.857).
+
+### Skills demonstrated
+| Stage | What it shows | Skill set |
+|---|---|---|
+| SQL (Postgres / Neon) | Loading data, segment analysis, response rates by customer group | Data analyst |
+| Python (scikit-learn, LightGBM, SHAP) | Baseline vs. gradient-boosted model, class-imbalance handling, lift/decile evaluation, explaining the model's drivers | Data scientist |
+| Tableau | Ranked call list, targeting simulator, segment heatmap for a non-technical audience | Data analyst / BI |
 
 ## Results
 Scored on a held-out test set of 76,222 customers (20% stratified split, never seen in training).
@@ -20,15 +37,15 @@ Scored on a held-out test set of 76,222 customers (20% stratified split, never s
 SHAP's top three drivers are `previously_insured`, `vehicle_damage` and `age`. Vehicle age looks strong in the raw SQL numbers but adds little in the model, because it overlaps with insurance status, damage and age. That check is documented in `notebooks/01_model.ipynb`, section 8.1.
 
 ## Dashboard
-Tableau Public: (https://public.tableau.com/views/DealershipCross-SellPropensityDashboard/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
+Tableau Public: [Dealership Cross-Sell Propensity Dashboard](https://public.tableau.com/app/profile/valentinus.gunawan/viz/DealershipCross-SellPropensityDashboard/Dashboard1)
 
 ![Tableau dashboard: targeting simulator, gain curve, response rate by priority tier, segment heatmap and ranked call list](dashboard/screenshot.png)
 
 The "Top % to Call" slider drives the targeting simulator: it shows how many customers are called, how many responders that captures, and the lift over random targeting.
 
 ## Dataset
-Kaggle: Health Insurance Cross Sell Prediction
-Download the CSV and place it in `data/raw/`
+Kaggle: [Health Insurance Cross Sell Prediction](https://www.kaggle.com/datasets/anmolkumar/health-insurance-cross-sell-prediction?select=train.csv)
+Download `train.csv` and place it in `data/raw/`
 (the `data/` folder is not pushed to GitHub).
 
 This is a public dataset reframed as a dealership cross-sell case. It is not real client or employer data.
