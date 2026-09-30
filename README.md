@@ -20,7 +20,7 @@ Scored on a held-out test set of 76,222 customers (20% stratified split, never s
 SHAP's top three drivers are `previously_insured`, `vehicle_damage` and `age`. Vehicle age looks strong in the raw SQL numbers but adds little in the model, because it overlaps with insurance status, damage and age. That check is documented in `notebooks/01_model.ipynb`, section 8.1.
 
 ## Dashboard
-Tableau Public: _link to be added_
+Tableau Public: (https://public.tableau.com/views/DealershipCross-SellPropensityDashboard/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 
 ![Tableau dashboard: targeting simulator, gain curve, response rate by priority tier, segment heatmap and ranked call list](dashboard/screenshot.png)
 
